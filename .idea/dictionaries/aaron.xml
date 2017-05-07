@@ -2,6 +2,7 @@
   <dictionary name="aaron">
     <words>
       <w>autoprefixer</w>
+      <w>classnames</w>
       <w>polyfill</w>
     </words>
   </dictionary>
