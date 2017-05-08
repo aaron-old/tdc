@@ -1,7 +1,10 @@
+//noinspection JSUnresolvedVariable
 import React, { Component } from 'react';
-import './Sidebar.css';
-import AuthorPhotoRow from './AuthorPhotoRow';
+import {Row} from 'react-bootstrap';
 
+import SidebarNavigation from './SidebarNavigation';
+
+import './Styles/Sidebar.css';
 
 export default class extends Component {
 
@@ -10,9 +13,10 @@ export default class extends Component {
 
         return (
             <div id="sidebarWrapper">
-                <AuthorPhotoRow/>
+                <Row>
+                    <SidebarNavigation/>
+                </Row>
             </div>
         )
     }
-
 }

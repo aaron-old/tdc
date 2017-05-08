@@ -5,19 +5,27 @@
     width: 0;
     height: 100%;
     margin-left: -250px;
+    background: #232526;
+    background: -webkit-linear-gradient(to left, #232526, #414345);
+    background: linear-gradient(to left, #232526, #414345);
     overflow-y: auto;
-    background: #000;
+    overflow-x: hidden;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 #wrapper.toggled #sidebarWrapper {
     width: 250px;
 }
 
-@media(min-width: 768px){
+@media (min-width: 768px) {
+
+    #sidebarWrapper {
+        width: 0;
+    }
 
     #wrapper.toggled #sidebarWrapper {
         width: 250px;
