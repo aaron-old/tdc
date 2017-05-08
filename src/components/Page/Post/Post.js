@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 export default class extends Component {
 
     render() {
 
         return (
-            <div></div>
+            // Full page for post. Needs to be navigated to by a particular slug.
+            <div>Post Page</div>
         )
     }
-
 }

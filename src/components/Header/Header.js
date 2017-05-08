@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Navbar } from "react-bootstrap"
+import React, { Component } from 'react';
+import { Navbar } from "react-bootstrap";
+import "./Header.css";
 
 export default class extends Component {
 
