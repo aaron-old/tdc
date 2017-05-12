@@ -1,6 +1,5 @@
 //noinspection JSUnresolvedVariable
 import React, { Component } from 'react';
-import { Navbar } from "react-bootstrap";
 import '../Navbar/Styles/Header.css';
 
 export default class extends Component {

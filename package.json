@@ -12,8 +12,9 @@
     "react-router-dom": "^4.1.1"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5",
-    "@kadira/storybook": "^2.21.0"
+    "@kadira/storybook": "^2.21.0",
+    "concurrently": "^3.4.0",
+    "react-scripts": "0.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
