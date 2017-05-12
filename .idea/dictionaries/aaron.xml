@@ -3,6 +3,8 @@
     <words>
       <w>autoprefixer</w>
       <w>classnames</w>
+      <w>navbar</w>
+      <w>navicon</w>
       <w>polyfill</w>
     </words>
   </dictionary>
