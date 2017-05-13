@@ -96,7 +96,6 @@ class App extends Component {
                                 <Col lg={12}>
                                     <Route exact path="/" component={Home}/>
                                     <Route exact path="/about" component={About}/>
-
                                     <Route path="/post/:slug" component={Post}/>
                                 </Col>
                             </Router>
