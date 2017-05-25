@@ -13,7 +13,7 @@ export default class extends Component {
     render() {
         return (
             <div id="authorPhotoRow" className="col-xs-12">
-                <img src="http://placehold.it/150x150" className="img-responsive img-circle center-block"/>
+                <img src="http://placehold.it/150x150" alt="Tlc" className="img-responsive img-circle center-block"/>
                 <p className="text-center name">
                     Thomas Cathey
                     <br/>

@@ -1,13 +1,10 @@
 //noinspection JSUnresolvedVariable
 import React, {Component} from 'react';
+import PageContainer from './components/Page/PageContainer';
 import Sidebar from './components/Sidebar/Sidebar';
 import Banner from './components/Navbar/Banner';
-import Home from './components/Page/Home/Home';
-import About from './components/Page/About/About';
-import Post from './components/Page/Post/Post';
 
-import {Row, Col} from 'react-bootstrap';
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 import './App.css';
 
@@ -21,6 +18,7 @@ class App extends Component {
         }
     }
 
+    // TODO: Remove the lifecycle methods for resizing to a HoC.
     /**
      *
      */
@@ -54,7 +52,6 @@ class App extends Component {
         if (this.state.width < 768) return this.changePageToggled(false);
     }
 
-
     /**
      *
      * @returns {string}
@@ -82,28 +79,19 @@ class App extends Component {
 
     render() {
         return (
-            <div id="wrapper" className={this.checkPageToggled()}>
-                <Sidebar/>
-                <div id="pageContentWrapper" className="container-fluid">
-
-                    <Banner
-                        onClick={this.handlePageToggle.bind(this)}
-                        toggled={this.state.isPageToggled}
+            <Router history="">
+                <div id="wrapper" className={this.checkPageToggled()}>
+                    <Sidebar
                     />
-                    <main id="main">
-                        <Row>
-                            <Router history="">
-                                <Col lg={12}>
-                                    <Route exact path="/" component={Home}/>
-                                    <Route exact path="/about" component={About}/>
-                                    <Route path="/post/:slug" component={Post}/>
-                                </Col>
-                            </Router>
-                        </Row>
-                    </main>
-
+                    <div id="pageContentWrapper" className="container-fluid">
+                        <Banner
+                            onClick={ this.handlePageToggle.bind(this) }
+                            toggled={ this.state.isPageToggled }
+                        />
+                        <PageContainer/>
+                    </div>
                 </div>
-            </div>
+            </Router>
         );
     }
 }
