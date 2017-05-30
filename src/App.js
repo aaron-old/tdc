@@ -82,6 +82,7 @@ class App extends Component {
             <Router history="">
                 <div id="wrapper" className={this.checkPageToggled()}>
                     <Sidebar
+                        toggled={ this.state.isPageToggled }
                     />
                     <div id="pageContentWrapper" className="container-fluid">
                         <Banner

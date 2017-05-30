@@ -1,8 +1,4 @@
-import React, { Component } from 'react';
-import './Styles/'
-
-
-
+import React from 'react';
 const AuthorSocial = () => (
 
     <div id="socialRow" className="text-center col-xs-12">

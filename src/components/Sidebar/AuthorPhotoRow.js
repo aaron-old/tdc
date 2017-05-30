@@ -1,25 +1,30 @@
-//noinspection JSUnresolvedVariable
-import React, {Component} from 'react';
-import './Styles/AuthorPhotoRow.css';
+import React from 'react';
+import radium from 'radium';
 
-export default class extends Component {
+const rowStyles = {
+    padding: 45,
+    cursor: "pointer"
+};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
+const nameStyles = {
+    color: "white",
+    margin: 10,
+    ':hover': {
+        color: "#ffd700",
+        cursor: "pointer"
     }
-    render() {
-        return (
-            <div id="authorPhotoRow" className="col-xs-12">
-                <img src="http://placehold.it/150x150" alt="Tlc" className="img-responsive img-circle center-block"/>
-                <p className="text-center name">
-                    Thomas Cathey
-                    <br/>
-                    Journalist, Boxer Enthusiast
-                </p>
-            </div>
-        )
-    }
-}
+};
+
+const AuthorPhotoRow = () => (
+
+    <div id="authorPhotoRow" className="col-xs-12" style={rowStyles}>
+        <img src="http://placehold.it/150x150" alt="Tlc" className="img-responsive img-circle center-block"/>
+        <p className="text-center" style={nameStyles}>
+            Thomas Cathey
+            <br/>
+            Journalist, Boxer Enthusiast
+        </p>
+    </div>
+);
+
+export default radium(AuthorPhotoRow)
