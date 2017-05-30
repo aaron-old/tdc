@@ -1,8 +1,10 @@
 //noinspection JSUnresolvedVariable
 import React, {Component} from 'react';
 //noinspection JSUnresolvedVariable
-import {NavLink} from 'react-router-dom';
 import radium from 'radium';
+import {Link} from 'react-router-dom';
+
+let RadiumNavLink = radium(Link);
 
 class SidebarNavigation extends Component {
 
@@ -20,24 +22,25 @@ class SidebarNavigation extends Component {
             boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
             transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
             borderRadius: 0,
-            // ':hover': {
-            //     'color': '#ffd700',
-            //     'boxShadow': "0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)"
-            // }
+            ':hover': {
+                'color': '#ffd700',
+                'boxShadow': "0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)"
+            }
         };
         this.styles = {
             margin: "20px 0 0 0",
             padding: 0
         }
     }
-   render() {
+
+    render() {
         return (
             <div id="navRow" className="col-xs-12" style={this.styles}>
                 <div>
-                    <NavLink to="/" className="btn btn-block" style={this.linkStyle}>Home</NavLink>
-                    <NavLink to="/about" className="btn btn-block" style={this.linkStyle}>About Me</NavLink>
-                    <a id="contactMe" className="btn btn-block" style={this.linkStyle}>Contact Me</a>
-                    <a id="subscribe" className="btn btn-block" style={this.linkStyle}>Subscribe</a>
+                    <RadiumNavLink to="/" className="btn btn-block" key="home" style={this.linkStyle}>Home</RadiumNavLink>
+                    <RadiumNavLink to="/about" className="btn btn-block" key="about" style={this.linkStyle}>About Me</RadiumNavLink>
+                    <a id="contactMe" className="btn btn-block" key="contact" style={this.linkStyle}>Contact Me</a>
+                    <a id="subscribe" className="btn btn-block" key="subscribe" style={this.linkStyle}>Subscribe</a>
                 </div>
             </div>
         )
