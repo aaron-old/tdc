@@ -1,5 +1,9 @@
 //noinspection JSUnresolvedVariable
 import React, { Component } from 'react';
+import radium from 'radium'
+import {Link} from 'react-router-dom';
+
+let RadiumNavLink = radium(Link);
 
 export default class extends Component {
 
@@ -18,8 +22,22 @@ export default class extends Component {
                 marginBottom: 0
             },
             pageTitle: {
-                textAlign: "right",
-                paddingRight: 20
+                paddingLeft: 20,
+                color: "white",
+                transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+                ":hover": {
+                    color: "#ffd700",
+                    cursor: "pointer",
+                    textDecoration: "none"
+                },
+                ":focus": {
+                  textDecoration: "none"
+                }
+            },
+            menuToggle: {
+                ':hover': {
+                    cursor: "pointer"
+                }
             }
         }
     }
@@ -28,13 +46,18 @@ export default class extends Component {
             <nav id="banner" className="navbar" style={this.styles.banner}>
                 <header className="navbar-header pull-left">
                     <a id="menuToggle"
+                       style={this.styles.menuToggle}
                        className="navbar-toggle collapsed"
                        onClick={this.props.onClick}>
                         <span className="sr-only"/>
                         <i className="fa fa-navicon"/>
                     </a>
                 </header>
-                <h2 style={this.styles.pageTitle}>{this.state.applicationName}</h2>
+                <h2>
+                    <RadiumNavLink to="/" style={this.styles.pageTitle}>
+                        {this.state.applicationName}
+                    </RadiumNavLink>
+                </h2>
             </nav>
         )
     }

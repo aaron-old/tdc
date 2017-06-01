@@ -1,6 +1,6 @@
+
 //noinspection JSUnresolvedVariable
 import React, {Component} from 'react';
-//noinspection JSUnresolvedVariable
 import radium from 'radium';
 import {Link} from 'react-router-dom';
 
@@ -32,7 +32,6 @@ class SidebarNavigation extends Component {
             padding: 0
         }
     }
-
     render() {
         return (
             <div id="navRow" className="col-xs-12" style={this.styles}>
