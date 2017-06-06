@@ -7,7 +7,7 @@ import authorImg from '../../images/thomas.png';
 let RadiumNavLink = radium(Link);
 
 const rowStyles = {
-    padding: 45
+    padding: "20px 45px 10px 45px"
 };
 
 const nameStyles = {
