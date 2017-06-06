@@ -1,12 +1,12 @@
 //noinspection JSUnresolvedVariable
 import React, {Component} from 'react'
+import PostViewer from '../Post/PostViewer'
 
-export default class extends Component {
+const HomePage = (props) => {
 
-    render() {
+    return (
+        <PostViewer/>
+    )
+};
 
-        return (
-            <div></div>
-        )
-    }
-}
+export default HomePage;

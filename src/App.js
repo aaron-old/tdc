@@ -2,8 +2,6 @@
 import React, {Component} from 'react';
 import PageContainer from './components/Page/PageContainer';
 import Sidebar from './components/Sidebar/Sidebar';
-import Banner from './components/Navbar/Banner';
-
 import {BrowserRouter as Router} from 'react-router-dom'
 
 import './App.css';
@@ -84,13 +82,9 @@ class App extends Component {
                     <Sidebar
                         toggled={ this.state.isPageToggled }
                     />
-                    <div id="pageContentWrapper" className="container-fluid">
-                        <Banner
-                            onClick={ this.handlePageToggle.bind(this) }
-                            toggled={ this.state.isPageToggled }
-                        />
-                        <PageContainer/>
-                    </div>
+                    <PageContainer
+                        sidebarToggleClick={this.handlePageToggle.bind(this)}
+                    />
                 </div>
             </Router>
         );

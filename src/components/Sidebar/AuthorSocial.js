@@ -1,8 +1,7 @@
 import React from 'react';
 import radium from 'radium';
 
-
-let styles = {
+const styles = {
 
     rowStyles : {
         margin: "0 10px 0 10px",
@@ -12,7 +11,6 @@ let styles = {
         color: 'blue ',
         margin: 10
     }
-
 };
 
 const AuthorSocial = () => (

@@ -1,7 +1,7 @@
 
 import Home from './Home/Home';
 import About from './About/About';
-import Post from './Post/Post';
+import PostViewer from '../Page/Post/PostViewer';
 
 
 const routes = [
@@ -16,7 +16,7 @@ const routes = [
     },
     {
         path: "/post/:slug",
-        component: Post
+        component: PostViewer
     }
 ];
 

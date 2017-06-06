@@ -27,14 +27,14 @@ class SidebarNavigation extends Component {
                 'boxShadow': "0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)"
             }
         };
-        this.styles = {
+        this.navRowStyles = {
             margin: "20px 0 0 0",
             padding: 0
         }
     }
     render() {
         return (
-            <div id="navRow" className="col-xs-12" style={this.styles}>
+            <div id="navRow" className="col-xs-12" style={this.navRowStyles}>
                 <div>
                     <RadiumNavLink to="/" className="btn btn-block" key="home" style={this.linkStyle}>Home</RadiumNavLink>
                     <RadiumNavLink to="/about" className="btn btn-block" key="about" style={this.linkStyle}>About Me</RadiumNavLink>
