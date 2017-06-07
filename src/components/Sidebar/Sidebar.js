@@ -9,9 +9,9 @@ const Sidebar = (props) => {
     let sidebarStyles = {
         zIndex: 1000,
         position: "fixed",
-        left: 250,
+        left: 260,
         height: "100%",
-        marginLeft: -250,
+        marginLeft: -260,
         background: "linear-gradient(to left, #232526, #414345)",
         overflowY: "auto",
         overflowX: "hidden",
@@ -20,7 +20,7 @@ const Sidebar = (props) => {
     };
     let toggleWidth = {
         toggled: {
-            width: 250
+            width: 260
         },
         notToggled: {
             width: 0

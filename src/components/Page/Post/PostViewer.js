@@ -2,14 +2,27 @@
  * Created by aaron on 6/5/2017.
  */
 
+//noinspection JSUnresolvedVariable
 import React, { Component } from 'react'
 import Post from '../../Post/Post';
 
-const PostViewer = (props) => {
+export default class extends Component{
 
-    return (
-        <Post/>
-    )
-};
+    constructor(props){
+        super(props);
+        this.state = {}
+    }
 
-export default PostViewer;
+    componentDidMount() {
+        // placing the ajax call to api here.
+        // depending on the props given to the PostViewer about the page, will need to determine the ajax call
+        // being made.
+    }
+
+    render() {
+
+        return ( <Post/> )
+    }
+}
+
+
