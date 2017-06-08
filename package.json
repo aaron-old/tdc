@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A boxing blog.",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "babel-node server.js",
+    "client": "babel-node start-client.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,8 @@
     "concurrently": "^3.4.0"
   },
   "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
     "express": "^4.15.3"
   }
 }
