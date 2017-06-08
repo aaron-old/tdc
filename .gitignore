@@ -22,8 +22,4 @@ yarn-error.log*
 .idea/tdc.iml
 .idea/workspace.xml
 .idea/inspectionProfiles/
-client/build/
-client/node_modules/
-client/prototype/
-client/public/
-client/src/
+
