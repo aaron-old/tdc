@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mustardmandevelopments/tdc#readme",
   "devDependencies": {
     "concurrently": "^3.4.0",
+    "mocha": "^3.4.2",
     "nodemon": "^1.11.0"
   },
   "dependencies": {
@@ -30,9 +31,8 @@
     "express": "^4.15.3",
     "method-override": "^2.3.9",
     "morgan": "^1.8.2",
+    "mysql": "^2.13.0",
     "passport": "^0.3.2",
-    "pg": "^6.2.4",
-    "pg-hstore": "^2.3.2",
     "sequelize": "^4.0.0",
     "sequelize-cli": "^2.7.0"
   }
