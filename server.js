@@ -7,6 +7,8 @@ const logger = require("morgan");
 const methodOverride = require("method-override");
 const app = express();
 const routes = require("./routes/index");
+const db = require('./models/index');
+
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -40,5 +42,11 @@ app.use("/api", routes);
 app.listen(app.get("port"), () => {
    console.log(`find the server at: http://localhost:${app.get("port")}/`);
 });
+
+db.sequelize
+    .sync()
+    .catch((e) => {
+        throw new Error(e);
+    });
 
 module.exports = app;
