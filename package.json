@@ -1,29 +1,40 @@
 {
-  "name": "tdc",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "bootstrap": "^3.3.7",
-    "font-awesome": "^4.7.0",
-    "prop-types": "^15.5.10",
-    "radium": "^0.19.1",
-    "react": "^15.5.4",
-    "react-bootstrap": "^0.31.0",
-    "react-dom": "^15.5.4",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
-  },
-  "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
-    "concurrently": "^3.4.0",
-    "react-scripts": "0.9.5"
-  },
+  "name": "tdoggs-corner",
+  "version": "1.0.0",
+  "description": "A boxing blog.",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "babel-node server.js",
+    "client": "babel-node start-client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustardmandevelopments/tdc.git"
+  },
+  "author": "Aaron Young",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mustardmandevelopments/tdc/issues"
+  },
+  "homepage": "https://github.com/mustardmandevelopments/tdc#readme",
+  "devDependencies": {
+    "concurrently": "^3.4.0",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "body-parser": "^1.17.2",
+    "compression": "^1.6.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "method-override": "^2.3.9",
+    "morgan": "^1.8.2",
+    "mysql": "^2.13.0",
+    "mysql2": "^1.3.5",
+    "passport": "^0.3.2",
+    "sequelize": "^4.0.0",
+    "sequelize-cli": "^2.7.0"
   }
 }

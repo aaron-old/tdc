@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/client/node_modules
 
 # testing
 /coverage
@@ -20,3 +21,6 @@ yarn-error.log*
 .idea/modules.xml
 .idea/tdc.iml
 .idea/workspace.xml
+.idea/inspectionProfiles/
+
+/config/config.json
