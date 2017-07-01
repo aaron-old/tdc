@@ -1,16 +1,21 @@
 require("dotenv").config();
+
 const express = require("express");
 const fs = require("fs");
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
+const session = require("express-session");
 const methodOverride = require("method-override");
+const pool = require("./dal/connection");
+const passport = require("passport");
 const app = express();
+
+//require("./config/passport")(passport);
+
+app.set("port", process.env.PORT || 3000);
+
 const routes = require("./routes/index");
-const db = require('./models/index');
-
-
-app.set('port', (process.env.PORT || 3001));
 
 if(process.env.NODE_ENV === "production"){
     app.use(express.static("client/build"));
@@ -33,20 +38,21 @@ if(process.env.NODE_ENV === "production"){
     });
 }
 
+//app.use(session({secret: process.env.SECRET_KEY}));
+
+//noinspection JSUnresolvedFunction
+//app.use(passport.initialize());
+//noinspection JSUnresolvedFunction
+//app.use(passport.session());
+
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
 app.use("/api", routes);
 
-app.listen(app.get("port"), () => {
+app.listen(app.get("port") , () => {
    console.log(`find the server at: http://localhost:${app.get("port")}/`);
 });
-
-db.sequelize
-    .sync()
-    .catch((e) => {
-        throw new Error(e);
-    });
 
 module.exports = app;
