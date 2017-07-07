@@ -13,6 +13,8 @@ const table = {
     }
 };
 
+
+
 exports.index = (res) => {
     let query = `SELECT * FROM ${table.tableName}`;
     db.query({sql: query}, (data) => {

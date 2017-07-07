@@ -1,24 +1,19 @@
-const localStrategy = require("passport-local");
-const connection = require("../dal/connection");
+let localStrategy = require("passport-local");
+let db = require("../dal/connection");
+let User = require("../dal/models/user");
 
 module.exports = (passport) => {
 
     passport.serializeUser((user, done) => {
-        done(null, user.id);
+        done(null, user.user_id);
     });
 
     passport.deserializeUser((id, done) => {
-
-        let conn = new connection();
-        conn.openConnection();
-
-        conn.query("select * from users where user_id = " + id, function (err, rows){
+        db.query("select * from users where user_id = " + id, function (err, rows){
             done(err, rows[0]).then(function () {
 
             });
-        });
-
-        conn.terminateConnection();
+        })
     });
 
     passport.use("local-signup", new LocalStrategy({

@@ -7,11 +7,8 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const methodOverride = require("method-override");
-const pool = require("./dal/connection");
 const passport = require("passport");
 const app = express();
-
-//require("./config/passport")(passport);
 
 app.set("port", process.env.PORT || 3000);
 
@@ -38,18 +35,20 @@ if(process.env.NODE_ENV === "production"){
     });
 }
 
-//app.use(session({secret: process.env.SECRET_KEY}));
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: true,
+    saveUninitialized: true
+}));
 
-//noinspection JSUnresolvedFunction
-//app.use(passport.initialize());
-//noinspection JSUnresolvedFunction
-//app.use(passport.session());
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-app.use("/api", routes);
+//app.use("/api", routes);
+
 
 app.listen(app.get("port") , () => {
    console.log(`find the server at: http://localhost:${app.get("port")}/`);

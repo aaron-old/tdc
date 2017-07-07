@@ -1,6 +1,5 @@
-const routes = require('express').Router();
-const passport = require('passport');
-const user = require("../dal/models/user");
+let User = require("../dal/models/user");
+const routes = require("express").Router();
 
 routes.get('/posts', (req, res)=> {
     res.status(200).json({message: "connected"});
@@ -13,7 +12,7 @@ routes.get('/posts', (req, res)=> {
 routes.get("/users", (req, res) => {
 
     try {
-        user.index(res);
+        User.index(res);
     }
     catch(e) {
         console.debug(e);
@@ -25,7 +24,7 @@ routes.get("/users/:id", (req, res) => {
 
     // test that the id
     try {
-        user.find(req.params.id, res);
+        User.find(req.params.id, res);
     }
     catch(e) {
         res.status(500);
@@ -41,4 +40,16 @@ routes.post("/users", (req, res) =>{
     }
 });
 
-module.exports = routes;
+
+module.exports = (app, passport) => {
+
+    app.use("/api", routes);
+    app.post("/login", passport.authenticate("local-login"), {
+        successRedirect: "/author",
+        failureRedirect: "/login"
+    })
+
+};
+
+
+// module.exports = routes;
