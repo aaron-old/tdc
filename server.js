@@ -8,6 +8,7 @@ const logger = require("morgan");
 const session = require("express-session");
 const methodOverride = require("method-override");
 const passport = require("passport");
+const db = require("./models");
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
@@ -38,7 +39,7 @@ if(process.env.NODE_ENV === "production"){
 app.use(session({
     secret: process.env.SECRET_KEY,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
 }));
 
 app.use(passport.initialize());
@@ -47,11 +48,17 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-//app.use("/api", routes);
-
-
-app.listen(app.get("port") , () => {
-   console.log(`find the server at: http://localhost:${app.get("port")}/`);
-});
+if(process.env.NODE_ENV === "development"){
+    db.sequelize.drop().then(() => {
+        db.sequelize.sync().then(()=> {
+            app.listen(app.get("port") , () => {
+                console.log(`find the server at: http://localhost:${app.get("port")}/`);
+            });
+        });
+    });
+}
+else {
+    db.sequelize.sync();
+}
 
 module.exports = app;

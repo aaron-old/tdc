@@ -47,10 +47,7 @@ const Banner = (props) => {
 
         <nav id="banner" className="navbar" style={styles.banner}>
             <header className="navbar-header pull-left">
-                <a id="menuToggle"
-                   style={styles.menuToggle}
-                   className="navbar-toggle collapsed"
-                   onClick={props.onClick}>
+                <a id="menuToggle" style={styles.menuToggle} className="navbar-toggle collapsed" onClick={props.onClick}>
                     <span className="sr-only"/>
                     <i className="fa fa-navicon"/>
                 </a>

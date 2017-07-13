@@ -40,6 +40,7 @@ class SidebarNavigation extends Component {
                     <RadiumNavLink to="/about" className="btn btn-block" key="about" style={this.linkStyle}>About Me</RadiumNavLink>
                     <a id="contactMe" className="btn btn-block" key="contact" style={this.linkStyle}>Contact Me</a>
                     <a id="subscribe" className="btn btn-block" key="subscribe" style={this.linkStyle}>Subscribe</a>
+                    <RadiumNavLink to="/login" className="btn btn-block" key="login" style={this.linkStyle}>Login</RadiumNavLink>
                 </div>
             </div>
         )

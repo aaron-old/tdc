@@ -3,10 +3,6 @@ const routes = require("express").Router();
 
 routes.get('/posts', (req, res)=> {
     res.status(200).json({message: "connected"});
-
-    // Create a connection to db?
-    // let posts = new Posts()
-    // posts.getXYZ
 });
 
 routes.get("/users", (req, res) => {

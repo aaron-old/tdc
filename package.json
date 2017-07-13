@@ -23,9 +23,11 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "auth0-js": "^8.8.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
     "dotenv": "^4.0.0",
