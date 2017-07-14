@@ -1,34 +1,28 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import React, {Component} from 'react';
+const PasswordField = (props) => {
 
-class PasswordField extends Component {
+    return (
+        <div className="form-group">
+            <label>{props.label}</label>
+            <input
+                className="form-control"
+                name={props.name}
+                type="password"
+                value={props.content}
+                onChange={props.onChange}
+                placeholder={props.placeholder || ""}/>
+        </div>
+    )
+};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: "",
-            valid: false
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    render() {
-        return (
-            <div className="form-group">
-                <label>Password</label>
-                <input
-                    type="password"
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    className="form-control"/>
-            </div>
-        )
-    }
-}
+PasswordField.propTypes = {
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    placeholder: PropTypes.string
+};
 
 export default PasswordField;

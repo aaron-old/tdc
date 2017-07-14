@@ -14,26 +14,48 @@ class LoginForm extends Component{
         this.state = {
             email: "",
             password: ""
-        }
+        };
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handleEmailChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
-    updateFieldState(event) {
-        console.log(event);
+    handleLogin(event) {
+
+        event.preventDefault();
+        const payload = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        console.log(payload);
+    }
+
+    handleEmailChange(event) {
+        this.setState({ email: event.target.value});
+    }
+
+    handlePasswordChange(event) {
+        this.setState({ password: event.target.value});
     }
 
     render() {
         return (
             <form className="login-form" style={styles}>
                 <EmailField
+                    label="Email"
                     name="loginEmail"
                     value={this.state.email}
-                    onChange={this.updateFieldState.bind(this)}
+                    onChange={this.handleEmailChange}
                 />
-                <PasswordField/>
-                <button type="submit">Submit</button>
+                <PasswordField
+                    label="Password"
+                    name="loginPassword"
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
+                />
+                <button type="submit" onClick={this.handleLogin}>Submit</button>
             </form>
         )
     }
-};
-
+}
 export default LoginForm;
