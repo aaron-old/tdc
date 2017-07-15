@@ -78,31 +78,33 @@ module.exports = (db, DataTypes) => {
             },
             tableName: "user",
             underscored: true,
-            instanceMethods: {},
-            classMethods: {
-                associate: function (models) {
-                },
-                findUser: function (email, password, cb) {
-                    User.findOne({
-                        where: {email: email}
-                    }).then(function (user) {
-                        if (user == null || user.password == null || user.password.length === 0) {
-                            cb('User / Password combination is not correct', null);
-                            return;
-                        }
-                        bcrypt.compare(password, user.password, (err, res) => {
-                            if (res)
-                                cb(null, user);
-                            else
-                                cb(err, null);
-                        });
-                    }).catch((err) => {
-                        cb(err, null);
-                    });
-                }
-            }
         });
-        User.prototype.cleanUser = function () {
+
+        // Class Methods
+        User.authenticate = function(body) {
+            return new Promise((resolve, reject) => {
+
+                if(typeof body.email !== "string" || typeof body.password !== "string") {
+                    return reject();
+                }
+                User.findOne({
+                    where: {
+                        email: body.email
+                    }
+                }).then((user) => {
+                    if(!user || !bcrypt.compareSync(body.password, user.get("password_hash"))){
+                        return reject();
+                    }
+                    resolve(user.cleanUser());
+                }, (e) => {
+                    reject(e);
+                })
+            })
+        };
+
+
+        // Instance Methods
+        User.prototype.cleanUser = function() {
             let json = this.toJSON();
             return _.pick(json, ["user_id", "email", "first_name", "last_name"]);
         };
