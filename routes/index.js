@@ -51,7 +51,16 @@ routes.post("/users/login", (req, res) => {
     let body = _.pick(req.body, "email", "password");
 
     db.User.authenticate(body).then( (user) => {
-        res.header("Auth", user.generateToken("authentication")).json(user.clean());
+
+        let token = user.generateToken("authentication");
+
+        if(token) {
+            res.header("Auth", token).json(user.clean());
+        }
+        else {
+            res.staus(401).send(e);
+        }
+
     }, (e) => {
         res.status(401).send(e);
     });
