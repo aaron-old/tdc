@@ -1,5 +1,7 @@
 let User = require("../dal/models/user");
 let db = require("../models");
+let _ = require("lodash");
+let bcrypt = require("bcrypt-nodejs");
 const routes = require("express").Router();
 
 routes.get('/posts', (req, res) => {
@@ -39,8 +41,29 @@ routes.post("/users", (req, res) => {
     }, (e) => {
         res.status(400).json(e);
     });
-
 });
 
+
+routes.post("/users/login", (req, res) => {
+
+    let body = _.pick(req.body, "email", "password");
+
+    if(typeof body.email !== "string" || typeof body.password !== "string") {
+        return res.status(400).send();
+    }
+
+    db.User.findOne({
+        where: {
+            email: body.email
+        }
+    }).then((user) => {
+        if(user === null || !bcrypt.compareSync(body.password, user.get("password_hash"))) {
+            return res.status(401).send();
+        }
+        res.status(200).json(user.cleanUser());
+    }, (e) => {
+        res.status(400).json(e);
+    });
+});
 
 module.exports = routes;

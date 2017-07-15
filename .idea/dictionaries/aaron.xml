@@ -2,11 +2,15 @@
   <dictionary name="aaron">
     <words>
       <w>autoprefixer</w>
+      <w>bcrypt</w>
       <w>classnames</w>
+      <w>crypto</w>
       <w>navbar</w>
       <w>navicon</w>
       <w>placehold</w>
       <w>polyfill</w>
+      <w>resave</w>
+      <w>signup</w>
     </words>
   </dictionary>
 </component>
