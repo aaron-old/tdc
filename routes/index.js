@@ -2,6 +2,8 @@ let User = require("../dal/models/user");
 let db = require("../models");
 let _ = require("lodash");
 
+let crypto = require("crypto");
+
 const routes = require("express").Router();
 
 routes.get('/posts', (req, res) => {
@@ -37,7 +39,7 @@ routes.post("/users", (req, res) => {
     let user = req.body;
 
     db.User.create(user).then((user) => {
-        res.status(201).json(user.cleanUser());
+        res.status(201).json(user.clean());
     }, (e) => {
         res.status(400).json(e);
     });
@@ -49,7 +51,7 @@ routes.post("/users/login", (req, res) => {
     let body = _.pick(req.body, "email", "password");
 
     db.User.authenticate(body).then( (user) => {
-        res.status(200).json(user);
+        res.header("Auth", user.generateToken("authentication")).json(user.clean());
     }, (e) => {
         res.status(401).send(e);
     });

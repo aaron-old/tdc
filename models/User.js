@@ -1,22 +1,15 @@
 'use strict';
 
 let bcrypt = require("bcrypt-nodejs");
+let crypto = require("crypto-js");
+let jwt = require("jsonwebtoken");
 let _ = require("lodash");
-
-
-let instanceMethods = {
-    hasSetPassword: () => {
-        return this.password != null && this.password.length > 0;
-    }
-
-};
 
 let hooks = {
 
-    beforeValidate: (user, options) => {
+    beforeValidate: (user) => {
         // Ensure user.email is a string...
         // If it is, then set the string to lowercase, else, throw validation error.
-
         if (typeof user.email === "string") {
             user.email.toLowerCase();
         }
@@ -95,7 +88,7 @@ module.exports = (db, DataTypes) => {
                     if(!user || !bcrypt.compareSync(body.password, user.get("password_hash"))){
                         return reject();
                     }
-                    resolve(user.cleanUser());
+                    resolve(user);
                 }, (e) => {
                     reject(e);
                 })
@@ -104,9 +97,25 @@ module.exports = (db, DataTypes) => {
 
 
         // Instance Methods
-        User.prototype.cleanUser = function() {
+        User.prototype.clean = function() {
             let json = this.toJSON();
             return _.pick(json, ["user_id", "email", "first_name", "last_name"]);
+        };
+
+        User.prototype.generateToken = function (type) {
+
+            try {
+                let stringData = JSON.stringify({ id: this.get("user_id"), type: type});
+                let encryptedData = crypto.AES.encrypt(stringData, "abc123!@#!").toString();
+                let token = jwt.sign({
+                    token: encryptedData
+                }, "random");
+                return token;
+            }
+            catch(e) {
+                console.error(e);
+                return undefined;
+            }
         };
         return User;
 };
