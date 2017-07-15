@@ -1,11 +1,25 @@
 'use strict';
 
 let bcrypt = require("bcrypt-nodejs");
-let crypto = require("crypto");
+let _ = require("lodash");
+
 
 let instanceMethods = {
     hasSetPassword: () => {
         return this.password != null && this.password.length > 0;
+    }
+
+};
+
+let hooks = {
+
+    beforeValidate: (user, options) => {
+        // Ensure user.email is a string...
+        // If it is, then set the string to lowercase, else, throw validation error.
+
+        if (typeof user.email === "string") {
+            user.email.toLowerCase();
+        }
     }
 };
 
@@ -18,7 +32,23 @@ module.exports = (db, DataTypes) => {
                 allowNull: false,
                 primaryKey: true
             },
-            password: DataTypes.STRING,
+            password: {
+                type: DataTypes.VIRTUAL,
+                set: function (value) {
+                    let salt = bcrypt.genSaltSync(10);
+                    let hashedPw = bcrypt.hashSync(value, salt);
+
+                    this.setDataValue("password", value);
+                    this.setDataValue("salt", salt);
+                    this.setDataValue("password_hash", hashedPw);
+                }
+            },
+            salt: {
+                type: DataTypes.STRING
+            },
+            password_hash: {
+                type: DataTypes.STRING
+            },
             google_id: {
                 type: DataTypes.STRING,
                 unique: true
@@ -43,29 +73,14 @@ module.exports = (db, DataTypes) => {
             last_name: DataTypes.STRING,
         },
         {
+            hooks: {
+                beforeValidate: hooks.beforeValidate
+            },
             tableName: "user",
             underscored: true,
-            instanceMethods: instanceMethods,
+            instanceMethods: {},
             classMethods: {
-                associate: function (models) {},
-                encryptPassword: (password, cb) => {
-                    if (!password) {
-                        cb('', null);
-                        return;
-                    }
-                    bcrypt.genSalt(10, (err, salt) => {
-                        if (err) {
-                            cb(null, err);
-                            return;
-                        }
-                        bcrypt.hash(password, salt, null, (hErr, hash) => {
-                            if (hErr) {
-                                cb(null, hErr);
-                                return;
-                            }
-                            cb(hash, null);
-                        });
-                    });
+                associate: function (models) {
                 },
                 findUser: function (email, password, cb) {
                     User.findOne({
@@ -81,9 +96,15 @@ module.exports = (db, DataTypes) => {
                             else
                                 cb(err, null);
                         });
-                    }).catch((err) => {cb(err, null); });
+                    }).catch((err) => {
+                        cb(err, null);
+                    });
                 }
             }
         });
-    return User;
+        User.prototype.cleanUser = function () {
+            let json = this.toJSON();
+            return _.pick(json, ["user_id", "email", "first_name", "last_name"]);
+        };
+        return User;
 };

@@ -1,7 +1,8 @@
 let User = require("../dal/models/user");
+let db = require("../models");
 const routes = require("express").Router();
 
-routes.get('/posts', (req, res)=> {
+routes.get('/posts', (req, res) => {
     res.status(200).json({message: "connected"});
 });
 
@@ -9,8 +10,11 @@ routes.get("/users", (req, res) => {
 
     try {
         User.index(res);
+        return res.status(200).json({
+            user: "aaron"
+        })
     }
-    catch(e) {
+    catch (e) {
         console.debug(e);
         res.status(500);
     }
@@ -22,30 +26,21 @@ routes.get("/users/:id", (req, res) => {
     try {
         User.find(req.params.id, res);
     }
-    catch(e) {
+    catch (e) {
         res.status(500);
     }
 });
 
-routes.post("/users", (req, res) =>{
-    try {
-        return res.status(200).json(req.body);
-    }
-    catch(e) {
-        res.status(500);
-    }
+routes.post("/users", (req, res) => {
+    let user = req.body;
+
+    db.User.create(user).then((user) => {
+        res.status(201).json(user.cleanUser());
+    }, (e) => {
+        res.status(400).json(e);
+    });
+
 });
 
 
-module.exports = (app, passport) => {
-
-    app.use("/api", routes);
-    app.post("/login", passport.authenticate("local-login"), {
-        successRedirect: "/author",
-        failureRedirect: "/login"
-    })
-
-};
-
-
-// module.exports = routes;
+module.exports = routes;

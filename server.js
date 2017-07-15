@@ -11,7 +11,7 @@ const passport = require("passport");
 const db = require("./models");
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3001);
 
 const routes = require("./routes/index");
 
@@ -36,11 +36,13 @@ if(process.env.NODE_ENV === "production"){
     });
 }
 
-app.use(session({
-    secret: process.env.SECRET_KEY,
-    resave: true,
-    saveUninitialized: true,
-}));
+
+
+// app.use(session({
+//     secret: process.env.SECRET_KEY,
+//     resave: true,
+//     saveUninitialized: true,
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -48,7 +50,9 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-if(process.env.NODE_ENV === "development"){
+app.use("/api", routes);
+
+if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
     db.sequelize.drop().then(() => {
         db.sequelize.sync().then(()=> {
             app.listen(app.get("port") , () => {
