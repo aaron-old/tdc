@@ -1,69 +1,26 @@
-let User = require("../dal/models/user");
+
 let db = require("../models");
 let _ = require("lodash");
-
-let crypto = require("crypto");
-
-const routes = require("express").Router();
-
-routes.get('/posts', (req, res) => {
-    res.status(200).json({message: "connected"});
-});
-
-routes.get("/users", (req, res) => {
-
-    try {
-        User.index(res);
-        return res.status(200).json({
-            user: "aaron"
-        })
-    }
-    catch (e) {
-        console.debug(e);
-        res.status(500);
-    }
-});
-
-routes.get("/users/:id", (req, res) => {
-
-    // test that the id
-    try {
-        User.find(req.params.id, res);
-    }
-    catch (e) {
-        res.status(500);
-    }
-});
-
-routes.post("/users", (req, res) => {
-    let user = req.body;
-
-    db.User.create(user).then((user) => {
-        res.status(201).json(user.clean());
-    }, (e) => {
-        res.status(400).json(e);
-    });
-});
+let middleware = require("../middleware")(db);
+let routes = require("express").Router();
 
 
-routes.post("/users/login", (req, res) => {
+let PostController = require("../controllers/PostController");
+let UserController = require("../controllers/UserController");
 
-    let body = _.pick(req.body, "email", "password");
+routes.get('/post', PostController.GetAllPost);
+routes.get("/post/slug", PostController.GetPostBySlug);
+routes.get("/post/:id", PostController.GetPostById);
+routes.post("/post", PostController.CreatePost);
+routes.put("/post/:id", PostController.UpdatePostById);
+routes.delete("/post/:id", PostController.DeletePostById);
 
-    db.User.authenticate(body).then( (user) => {
 
-        let token = user.generateToken("authentication");
+// TODO: make a route that needs to be authenticated by the application... so a person cannot call this from the outside.
 
-        if(token) {
-            res.header("Auth", token).json(user.clean());
-        }
-        else {
-            res.staus(401).send(e);
-        }
-
-    }, (e) => {
-        res.status(401).send(e);
-    });
-});
+routes.get("/users", UserController.GetUsers);
+routes.get("/users/:id", UserController.GetUserById);
+routes.post("/users", UserController.CreateUser);
+routes.post("/users/login", UserController.Login);
 
 module.exports = routes;
