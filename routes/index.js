@@ -8,16 +8,15 @@ let routes = require("express").Router();
 let PostController = require("../controllers/PostController");
 let UserController = require("../controllers/UserController");
 
+// Post Routes
 routes.get('/post', PostController.GetAllPost);
 routes.get("/post/slug", PostController.GetPostBySlug);
 routes.get("/post/:id", PostController.GetPostById);
-routes.post("/post", PostController.CreatePost);
-routes.put("/post/:id", PostController.UpdatePostById);
-routes.delete("/post/:id", PostController.DeletePostById);
+routes.post("/post", middleware.requireAuthentication, PostController.CreatePost);
+routes.put("/post/:id", middleware.requireAuthentication, PostController.UpdatePostById);
+routes.delete("/post/:id", middleware.requireAuthentication, PostController.DeletePostById);
 
-
-// TODO: make a route that needs to be authenticated by the application... so a person cannot call this from the outside.
-
+// User Routes
 routes.get("/users", UserController.GetUsers);
 routes.get("/users/:id", UserController.GetUserById);
 routes.post("/users", UserController.CreateUser);

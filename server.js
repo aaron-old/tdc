@@ -53,13 +53,19 @@ app.use(methodOverride());
 app.use("/api", routes);
 
 if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
-    db.sequelize.drop().then(() => {
-        db.sequelize.sync().then(()=> {
-            app.listen(app.get("port") , () => {
-                console.log(`find the server at: http://localhost:${app.get("port")}/`);
-            });
-        });
-    });
+    // db.sequelize.drop().then(() => {
+    //     db.sequelize.sync().then(()=> {
+    //         app.listen(app.get("port") , () => {
+    //             console.log(`find the server at: http://localhost:${app.get("port")}/`);
+    //         });
+    //     });
+    // });
+
+    db.sequelize.sync().then(() => {
+        app.listen(app.get("port"), () => {
+            console.log(`find the server at: http://localhost:${app.get("port")}/`);
+        })
+    })
 }
 else {
     db.sequelize.sync();

@@ -94,7 +94,32 @@ module.exports = (db, DataTypes) => {
                 }, (e) => {
                     reject(e);
                 })
-            })
+            });
+        };
+
+        User.findByToken = function (token) {
+
+            return new Promise((resolve, reject) => {
+
+                try {
+                    let decodedJWT = jwt.verify(token, "random");
+                    let bytes = crypto.AES.decrypt(decodedJWT.token, "abc123!@#!");
+                    let tokenData = JSON.parse(bytes.toString(crypto.enc.Utf8));
+                    User.findById(tokenData.user_id).then( user => {
+                        if(user) {
+                            resolve(user);
+                        }
+                        else {
+                            reject();
+                        }
+                    }, () => {
+                        reject();
+                    });
+                }
+                catch (e) {
+                    reject();
+                }
+            });
         };
 
         // Instance Methods
@@ -106,7 +131,7 @@ module.exports = (db, DataTypes) => {
         User.prototype.generateToken = function (type) {
 
             try {
-                let stringData = JSON.stringify({ id: this.get("user_id"), type: type});
+                let stringData = JSON.stringify({ user_id: this.get("user_id"), type: type});
                 let encryptedData = crypto.AES.encrypt(stringData, "abc123!@#!").toString();
                 let token = jwt.sign({
                     token: encryptedData
