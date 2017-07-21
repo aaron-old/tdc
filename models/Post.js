@@ -25,7 +25,6 @@ module.exports = (db, DataTypes) => {
             allowNull: false
         }
     }, {
-
         tableName: "post",
         underscored: true,
 

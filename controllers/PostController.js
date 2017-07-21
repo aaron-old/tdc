@@ -1,5 +1,6 @@
 
 let db = require("../models");
+let _ = require("lodash");
 
 /**
  *
@@ -62,7 +63,34 @@ exports.GetPostBySlug = (req, res) => {};
  * @param res
  * @constructor
  */
-exports.UpdatePostById = (req, res) => {};
+exports.UpdatePostById = (req, res) => {
+
+    let id = req.params.id;
+    let body = _.pick(req.body, "title", "content", "publish");
+    let attributes = {};
+
+    for(let property in body) {
+        if(body.hasOwnProperty(property)){
+            attributes[property] = body[property];
+        }
+    }
+
+    db.Post.findById(id).then((post) => {
+
+        if(post) {
+            return post.update(attributes);
+        }
+        else {
+            res.status(404).send();
+        }
+    }, () => {
+        res.status(500).send();
+    }).then((post) => {
+        res.status(204).json(post);
+    }, () => {
+        res.status(400).send();
+    });
+};
 
 /**
  *
