@@ -11,6 +11,8 @@ const passport = require("passport");
 const db = require("./models");
 const app = express();
 
+console.log()
+
 app.set("port", process.env.PORT || 3001);
 
 const routes = require("./routes/index");
@@ -52,15 +54,8 @@ app.use(methodOverride());
 
 app.use("/api", routes);
 
-if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
-    // db.sequelize.drop().then(() => {
-    //     db.sequelize.sync().then(()=> {
-    //         app.listen(app.get("port") , () => {
-    //             console.log(`find the server at: http://localhost:${app.get("port")}/`);
-    //         });
-    //     });
-    // });
 
+if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
     db.sequelize.sync().then(() => {
         app.listen(app.get("port"), () => {
             console.log(`find the server at: http://localhost:${app.get("port")}/`);
@@ -68,6 +63,7 @@ if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
     })
 }
 else {
+    app.listen(app.get("port"));
     db.sequelize.sync();
 }
 

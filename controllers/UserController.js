@@ -1,53 +1,70 @@
-
 let db = require("../models");
-let _  = require("lodash");
 
+let userRepositories = require("../repositories/UserRepository");
+let _ = require("lodash");
+
+/**
+ *
+ * @param req
+ * @param res
+ * @constructor
+ */
 exports.GetUsers = (req, res) => {
 
-    db.User.findAll().then((users) => {
-        res.status(200).json(users);
-    }, (e) => {
+    userRepositories.getUsers().then((users) => res.status(200).json(users), (e) =>
+    {
         res.status(400).send();
-    })
+    });
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ * @constructor
+ */
 exports.GetUserById = (req, res) => {
-    let id = req.params.id;
-    if(id) {
 
-        db.User.findById(id).then((user) => {
-            res.status(200).json(user.clean());
-        }, () => {
+    let id = req.params.id;
+    if (id) {
+
+        userRepositories.getUserById(id).then((user) => res.status(200).json(user), (e) =>
+        {
             res.status(400).send();
         });
     }
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ * @constructor
+ */
 exports.CreateUser = (req, res) => {
-    let user = req.body;
-    db.User.create(user).then((user) => {
-        res.status(201).json(user.clean());
-    }, (e) => {
 
-        if(process.env.NODE_ENV === "production") {
+    let user = req.body;
+    if (user) {
+
+        userRepositories.createUser(user).then((user) => res.status(201).json(user), (e) =>
+        {
             res.status(400).send();
-        }
-        res.status(400).json(e);
-    });
+        });
+    }
 };
 
 exports.Login = (req, res) => {
-    let body = _.pick(req.body, "email", "password");
-    db.User.authenticate(body).then( (user) => {
-        let token = user.generateToken("authentication");
-        if(token) {
-            res.header("Auth", token).json(user.clean());
-        }
-        else {
-            res.staus(401).send(e);
-        }
 
-    }, (e) => {
-        res.status(401).send(e);
-    });
+    let tokens = _.pick(req.body, "email", "password");
+    if (tokens) {
+
+        userRepositories.authenticateUser(tokens).then((authUser) =>
+        {
+            res.header("Auth", authUser.authToken).json(authUser.user);
+
+        }, (e) =>
+        {
+            res.status(401).send();
+        });
+    }
 };

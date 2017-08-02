@@ -25,6 +25,9 @@ module.exports = (db, DataTypes) => {
 
     // Class Methods
 
+    // Associations
+
+
     // Instance Methods
 
     return Permission;

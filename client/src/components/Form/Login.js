@@ -28,6 +28,7 @@ class LoginForm extends Component{
             password: this.state.password
         };
         console.log(payload);
+        // TODO: Create authentication service call with the payload.
     }
 
     handleEmailChange(event) {

@@ -40,6 +40,7 @@ exports.GetAllPost = (req, res) => {
 exports.GetPostById = (req, res) => {
 
     let id = req.params.id;
+    if(typeof id !== "number") { return this.GetPostBySlug(req, res)}
     if(id) {
         db.Post.findById(id).then((post) => {
             res.status(200).json(post);
@@ -55,7 +56,21 @@ exports.GetPostById = (req, res) => {
  * @param res
  * @constructor
  */
-exports.GetPostBySlug = (req, res) => {};
+exports.GetPostBySlug = (req, res) => {
+
+    let slug = req.params.id;
+    if(slug) {
+        db.Post.find({
+            where: {
+                slug: slug
+            }
+        }).then( (post) => {
+            res.status(200).json(post);
+        }, () => {
+            res.status(400).send();
+        });
+    }
+};
 
 /**
  *

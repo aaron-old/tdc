@@ -7,6 +7,10 @@ module.exports = (db, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
+        slug: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         title: {
             type: DataTypes.STRING,
             allowNull: false
