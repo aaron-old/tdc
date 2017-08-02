@@ -1,5 +1,5 @@
 
-let db = require("../models");
+let postRepository = require("../repositories/PostRepository");
 let _ = require("lodash");
 
 /**
@@ -8,25 +8,10 @@ let _ = require("lodash");
  * @param res
  * @constructor
  */
-exports.CreatePost = (req, res) => {
-    let body = req.body;
-    db.Post.create(body).then((post) => {
-        res.status(201).json(post);
-    }, () => {
-        res.status(400).send();
-    });
-};
-
-/**
- *
- * @param req
- * @param res
- * @constructor
- */
 exports.GetAllPost = (req, res) => {
-    db.Post.findAll().then((post) => {
-        res.status(200).json(post);
-    }, () => {
+
+    postRepository.getPosts().then((posts) => res.status(200).json(posts), (e) =>
+    {
         res.status(400).send();
     });
 };
@@ -42,9 +27,8 @@ exports.GetPostById = (req, res) => {
     let id = req.params.id;
     if(typeof id !== "number") { return this.GetPostBySlug(req, res)}
     if(id) {
-        db.Post.findById(id).then((post) => {
-            res.status(200).json(post);
-        }, () => {
+        postRepository.getPostById(id).then((post) => res.status(200).json(200), (e) =>
+        {
             res.status(400).send();
         });
     }
@@ -60,13 +44,8 @@ exports.GetPostBySlug = (req, res) => {
 
     let slug = req.params.id;
     if(slug) {
-        db.Post.find({
-            where: {
-                slug: slug
-            }
-        }).then( (post) => {
-            res.status(200).json(post);
-        }, () => {
+        postRepository.getPostBySlug(slug).then((post) => res.status(200).json(200), (e) =>
+        {
             res.status(400).send();
         });
     }
@@ -78,33 +57,35 @@ exports.GetPostBySlug = (req, res) => {
  * @param res
  * @constructor
  */
+exports.CreatePost = (req, res) => {
+
+    let post = req.body;
+    if(post) {
+        postRepository.createPost(post).then((post) => res.status(200).json(post), (e) =>
+        {
+            res.status(400).send();
+        });
+    }
+};
+
+
+/**
+ *
+ * @param req
+ * @param res
+ * @constructor
+ */
 exports.UpdatePostById = (req, res) => {
 
     let id = req.params.id;
     let body = _.pick(req.body, "title", "content", "publish");
-    let attributes = {};
 
-    for(let property in body) {
-        if(body.hasOwnProperty(property)){
-            attributes[property] = body[property];
-        }
-    }
+    postRepository.updatePost(id, body).then((updatedPost) => {
+        res.status(204).json(updatedPost)
 
-    db.Post.findById(id).then((post) => {
-
-        if(post) {
-            return post.update(attributes);
-        }
-        else {
-            res.status(404).send();
-        }
-    }, () => {
-        res.status(500).send();
-    }).then((post) => {
-        res.status(204).json(post);
-    }, () => {
+    }, (e) => {
         res.status(400).send();
-    });
+    })
 };
 
 /**
@@ -117,16 +98,9 @@ exports.DeletePostById = (req, res) => {
 
     let id = req.params.id;
     if(id) {
-        db.Post.destroy({
-            where: {
-                post_id: id
-            }
-        }).then((rows) => {
-
-            if(rows === 0) { res.status(404).send();}
-            res.status(204).send();
-        }, () => {
-            res.status(500).send();
+        postRepository.deletePostById(id).then(() => res.status(204).send(), (e) =>
+        {
+            res.status(400).send();
         });
     }
 };

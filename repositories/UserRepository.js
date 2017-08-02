@@ -1,7 +1,6 @@
 'use strict';
 
 let db = require("../models");
-
 let repo = {};
 
 /**

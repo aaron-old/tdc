@@ -11,8 +11,8 @@ let UserController = require("../controllers/UserController");
 // Post Routes
 routes.get('/post', PostController.GetAllPost);
 routes.get("/post/:id", PostController.GetPostById);
-routes.post("/post", middleware.requireAuthentication, PostController.CreatePost);
-routes.put("/post/:id", middleware.requireAuthentication, PostController.UpdatePostById);
+routes.put("/post", middleware.requireAuthentication, PostController.CreatePost);
+routes.post("/post/:id", middleware.requireAuthentication, PostController.UpdatePostById);
 routes.delete("/post/:id", middleware.requireAuthentication, PostController.DeletePostById);
 
 // User Routes

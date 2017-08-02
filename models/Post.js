@@ -1,6 +1,7 @@
 module.exports = (db, DataTypes) => {
 
     let Post = db.define("Post", {
+
         post_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -34,11 +35,6 @@ module.exports = (db, DataTypes) => {
 
     });
 
-    // Class Methods
-
-    // Instance Methods
-
-    // Associations
     Post.associate = function (models) {
         Post.belongsTo(models.User, {foreignKey: "created_by"})
     };
