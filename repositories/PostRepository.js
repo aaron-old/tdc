@@ -26,6 +26,7 @@ repo.getPostById  = (id) => {
 
     return new Promise((resolve, reject) =>
     {
+        console.log(id);
         db.Post.findById(id).then((post) => resolve(post), (e) =>
         {
             reject();

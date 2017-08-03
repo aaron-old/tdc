@@ -25,9 +25,8 @@ exports.GetAllPost = (req, res) => {
 exports.GetPostById = (req, res) => {
 
     let id = req.params.id;
-    if(typeof id !== "number") { return this.GetPostBySlug(req, res)}
     if(id) {
-        postRepository.getPostById(id).then((post) => res.status(200).json(200), (e) =>
+        postRepository.getPostById(id).then((post) => res.status(200).json(post), (e) =>
         {
             res.status(400).send();
         });
@@ -44,7 +43,7 @@ exports.GetPostBySlug = (req, res) => {
 
     let slug = req.params.id;
     if(slug) {
-        postRepository.getPostBySlug(slug).then((post) => res.status(200).json(200), (e) =>
+        postRepository.getPostBySlug(slug).then((post) => res.status(200).json(post), (e) =>
         {
             res.status(400).send();
         });
