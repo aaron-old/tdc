@@ -1,7 +1,7 @@
 
 module.exports = (db, DataTypes) => {
 
-    let UserRole = db.define("UserRole", {
+    let UserRole = db.define("User_Role", {
 
         user_id: {
             type: DataTypes.INTEGER,

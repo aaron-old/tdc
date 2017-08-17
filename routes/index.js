@@ -1,24 +1,30 @@
-
 let db = require("../models");
 let _ = require("lodash");
-let middleware = require("../middleware")(db);
+let authMiddleware = require("../auth/AuthMiddleware")(db);
 let routes = require("express").Router();
-
+let passport = require('passport');
 
 let PostController = require("../controllers/PostController");
 let UserController = require("../controllers/UserController");
+let AuthenticationController = require('../controllers/AuthenticationController');
 
 // Post Routes
 routes.get('/post', PostController.GetAllPost);
 routes.get("/post/:id", PostController.GetPostById);
-routes.put("/post", middleware.requireAuthentication, PostController.CreatePost);
-routes.post("/post/:id", middleware.requireAuthentication, PostController.UpdatePostById);
-routes.delete("/post/:id", middleware.requireAuthentication, PostController.DeletePostById);
+routes.put("/post", authMiddleware.requireUserAuthentication, PostController.CreatePost);
+routes.post("/post/:id", authMiddleware.requireUserAuthentication, PostController.UpdatePostById);
+routes.delete("/post/:id", authMiddleware.requireUserAuthentication, PostController.DeletePostById);
 
 // User Routes
-routes.get("/users", UserController.GetUsers);
+routes.get("/users", authMiddleware.requireAdminAuthentication, UserController.GetUsers);
+routes.get("/users/roles", authMiddleware.requireAdminAuthentication, UserController.GetUsersWithRoles);
 routes.get("/users/:id", UserController.GetUserById);
-routes.post("/users", UserController.CreateUser);
-routes.post("/users/login", UserController.Login);
+routes.post("/users", authMiddleware.requireAdminAuthentication, UserController.CreateUser);
+routes.delete("/users/:id", authMiddleware.requireAdminAuthentication, UserController.DeleteUserById);
+
+// Authentication Routes
+routes.post("/auth/login", AuthenticationController.Login);
+routes.post("/auth/logout", AuthenticationController.Logout);
+
 
 module.exports = routes;

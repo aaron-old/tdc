@@ -1,5 +1,6 @@
 
 let postRepository = require("../repositories/PostRepository");
+let isDevOrTest = require("../helpers").isDevOrTest;
 let _ = require("lodash");
 
 /**
@@ -62,6 +63,9 @@ exports.CreatePost = (req, res) => {
     if(post) {
         postRepository.createPost(post).then((post) => res.status(200).json(post), (e) =>
         {
+            if(isDevOrTest()) {
+                res.status(400).send(e);
+            }
             res.status(400).send();
         });
     }
@@ -80,7 +84,7 @@ exports.UpdatePostById = (req, res) => {
     let body = _.pick(req.body, "title", "content", "publish");
 
     postRepository.updatePost(id, body).then((updatedPost) => {
-        res.status(204).json(updatedPost)
+        res.status(204).json(updatedPost.toJSON())
 
     }, (e) => {
         res.status(400).send();

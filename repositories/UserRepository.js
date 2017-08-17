@@ -1,21 +1,45 @@
 'use strict';
 
 let db = require("../models");
+let token = require("../auth/Jwt");
 let repo = {};
+
+const cleanUserAttr = [
+    "user_id",
+    "email",
+    "first_name",
+    "last_name"
+];
 
 /**
  *
  */
 repo.getUsers = () => {
 
-    return new Promise((resolve, reject) =>
-    {
+  return new Promise((resolve, reject) => {
 
-        db.User.findAll().then((users) => resolve(users), (e) =>
-        {
-            reject();
-        });
+    db.User.findAll({attributes: cleanUserAttr}).then((users) => resolve(users), (e) => {
+      reject(e);
     });
+  });
+};
+
+/**
+ *
+ */
+repo.getUsersWithRoles = () => {
+
+  return new Promise((resolve, reject) => {
+
+    db.User.findAll({
+      attributes: cleanUserAttr,
+      include: [{
+        model: db.User_Role
+      }]
+    }).then((users) => resolve(users), (e) => {
+      reject(e);
+    });
+  });
 };
 
 /**
@@ -25,15 +49,30 @@ repo.getUsers = () => {
  */
 repo.getUserById = (id) => {
 
-    return new Promise((resolve, reject) =>
-    {
-        db.User.findById(id).then((user) => resolve(user.clean()), () =>
-        {
-            reject();
-        });
+  return new Promise((resolve, reject) => {
+    db.User.findById(id).then((user) => resolve(user.clean()), () => {
+      reject();
     });
+  });
 };
 
+/**
+ *
+ * @param email
+ */
+repo.getUserByEmail = (email) => {
+
+  return new Promise((resolve, reject) => {
+    db.User.findOne({
+      where: {
+        email
+      }
+    }).then((user) => resolve(user), (e) =>
+    {
+      reject(e);
+    });
+  });
+};
 
 /**
  *
@@ -42,38 +81,76 @@ repo.getUserById = (id) => {
  */
 repo.createUser = (user) => {
 
-    return new Promise((resolve, reject) =>
-    {
-        db.User.create(user).then((user) => resolve(user.clean()), () =>
-        {
-            reject();
-        });
+  return new Promise((resolve, reject) => {
+    db.User.create(user).then((user) => resolve(user.clean()), () => {
+      reject();
     });
+  });
 };
 
 /**
  *
- * @param tokens
+ * @param id
  */
-repo.authenticateUser = (tokens) => {
+repo.deleteUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.User.destroy({
+      where: {
+        user_id: id
+      }
+    }).then((rows) => {
+      if(rows === 0) {
+        reject();
+      }
+      else {
+        resolve();
+      }
+    })
+  });
+};
 
-    return new Promise((resolve, reject) =>
-    {
-        db.User.authenticate(tokens).then((user) =>
-        {
-            let authToken = user.generateToken("authentication");
-            if(authToken) {
+/**
+ *
+ * @param credentials
+ */
+repo.authenticate = (credentials) => {
 
-                resolve({
-                    user: user,
-                    authToken: authToken
-                });
-            }
-            else {
-                reject();
-            }
+  return new Promise((resolve, reject) => {
+
+    let email = credentials.email;
+    let password = credentials.password;
+
+    if(email && password) {
+
+      db.User.authenticate(credentials).then((authenticatedUser) =>
+      {
+        // Create the access token
+        let data = JSON.stringify({
+          user_id: authenticatedUser.user_id,
+          type: "authentication"
         });
-    });
+
+        let accessToken = token.generateToken(data);
+
+        if(authenticatedUser && accessToken) {
+          resolve({
+            user: authenticatedUser,
+            accessToken: accessToken
+          });
+        }
+        else {
+          reject();
+        }
+      }, () =>
+      {
+        reject();
+      });
+    }
+    else {
+      reject();
+    }
+  });
+
 };
 
 module.exports = repo;

@@ -1,3 +1,6 @@
+
+let _ = require("lodash");
+
 module.exports = (db, DataTypes) => {
 
     let Post = db.define("Post", {
@@ -36,7 +39,8 @@ module.exports = (db, DataTypes) => {
     });
 
     Post.associate = function (models) {
-        Post.belongsTo(models.User, {foreignKey: "created_by"})
+        Post.belongsTo(models.User, {foreignKey: "created_by"});
+        Post.hasMany(models.Post_Photo, {foreignKey: "post_id"})
     };
 
     return Post;

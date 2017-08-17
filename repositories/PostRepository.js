@@ -11,7 +11,10 @@ repo.getPosts = () => {
 
     return new Promise((resolve, reject) =>
     {
-        db.Post.findAll().then((posts) => resolve(posts), (e) =>
+        db.Post.findAll().then((posts) =>
+        {
+           resolve(posts);
+        }, (e) =>
         {
             reject();
         });
@@ -26,7 +29,6 @@ repo.getPostById  = (id) => {
 
     return new Promise((resolve, reject) =>
     {
-        console.log(id);
         db.Post.findById(id).then((post) => resolve(post), (e) =>
         {
             reject();
@@ -61,9 +63,12 @@ repo.createPost = (post) => {
 
     return new Promise((resolve, reject) =>
     {
-        db.Post.create(post).then((post) => resolve(post), (e) =>
+        db.Post.create(post).then((post) => {
+            console.log(post);
+            resolve(post);
+        }, (e) =>
         {
-            reject();
+            reject(e);
         });
     });
 };
@@ -85,7 +90,7 @@ repo.updatePost = (id, body) => {
         {
             if(post) {
                 post.update(attributes).then((updatedPost) => {
-                    resolve(updatedPost.dataValues)
+                    resolve(updatedPost);
                 });
             }
             else {

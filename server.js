@@ -11,8 +11,6 @@ const passport = require("passport");
 const db = require("./models");
 const app = express();
 
-console.log()
-
 app.set("port", process.env.PORT || 3001);
 
 const routes = require("./routes/index");
@@ -53,7 +51,6 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 app.use("/api", routes);
-
 
 if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"){
     db.sequelize.sync().then(() => {
