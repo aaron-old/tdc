@@ -22,5 +22,9 @@ module.exports = (db, DataTypes) => {
         underscored: true
     });
 
+    Role.associate = function (models) {
+      Role.belongsToMany(models.User, {foreignKey: "role_id", through: 'user_role'} );
+    };
+
     return Role;
 };

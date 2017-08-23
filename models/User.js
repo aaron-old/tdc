@@ -85,7 +85,10 @@ module.exports = (db, DataTypes) => {
         return reject();
       }
 
-      User.findOne({where: {email}}).then((user) =>
+      User.findOne({
+        where: {email},
+
+      }).then((user) =>
       {
         if (!user || !bcrypt.compareSync(body.password, user.get("password_hash"))) {
           return reject();
@@ -125,12 +128,12 @@ module.exports = (db, DataTypes) => {
   };
 
   User.associate = function (models) {
-    User.hasMany(models.User_Role, {foreignKey: "user_id"});
+    User.belongsToMany(models.Role, {foreignKey: "user_id", through: "user_role"});
   };
 
   User.prototype.clean = function () {
     let json = this.toJSON();
-    return _.pick(json, ["user_id", "email", "first_name", "last_name"]);
+    return _.pick(json, ["user_id", "email", "first_name", "last_name", "Roles"]);
   };
 
   return User;

@@ -28,7 +28,9 @@ module.exports = {
   generateToken: (data) => {
 
     try {
-      return jwt.sign(encryptData(data), process.env.JWT_SECRET);
+      return jwt.sign({
+        data: data
+      }, process.env.JWT_SECRET);
     }
     catch (e) {
 
@@ -46,7 +48,7 @@ module.exports = {
 
     try {
       let verifiedJwt = jwt.verify(token, process.env.JWT_SECRET);
-      return JSON.parse(decryptData(verifiedJwt));
+      return JSON.parse(verifiedJwt.data);
     }
     catch (e) {
 

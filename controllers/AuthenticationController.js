@@ -9,12 +9,19 @@ exports.RegisterUser = (req, res) => {
 
 };
 
+/**
+ * Login controller method.
+ * @param req
+ * @param res
+ * @constructor
+ */
 exports.Login = (req, res) => {
 
   let credentials = _.pick(req.body, "email", "password");
+
   UserRepo.authenticate(credentials).then((authUser) =>
   {
-    res.header("Auth", authUser.accessToken).json(authUser.user);
+    res.header("Authorization", authUser.accessToken).json(authUser.user);
   }, (e) =>
   {
     if(isDevOrTest()) {

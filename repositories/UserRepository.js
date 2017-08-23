@@ -5,10 +5,10 @@ let token = require("../auth/Jwt");
 let repo = {};
 
 const cleanUserAttr = [
-    "user_id",
-    "email",
-    "first_name",
-    "last_name"
+  "user_id",
+  "email",
+  "first_name",
+  "last_name"
 ];
 
 /**
@@ -34,7 +34,7 @@ repo.getUsersWithRoles = () => {
     db.User.findAll({
       attributes: cleanUserAttr,
       include: [{
-        model: db.User_Role
+        model: db.Role
       }]
     }).then((users) => resolve(users), (e) => {
       reject(e);
@@ -50,7 +50,17 @@ repo.getUsersWithRoles = () => {
 repo.getUserById = (id) => {
 
   return new Promise((resolve, reject) => {
-    db.User.findById(id).then((user) => resolve(user.clean()), () => {
+    db.User.findOne({
+      include: [
+        {
+          model: db.Role,
+
+        }
+      ],
+      where: {
+        user_id: id
+      }
+    }).then((user) => resolve(user.clean()), () => {
       reject();
     });
   });
@@ -67,8 +77,7 @@ repo.getUserByEmail = (email) => {
       where: {
         email
       }
-    }).then((user) => resolve(user), (e) =>
-    {
+    }).then((user) => resolve(user), (e) => {
       reject(e);
     });
   });
@@ -99,7 +108,7 @@ repo.deleteUserById = (id) => {
         user_id: id
       }
     }).then((rows) => {
-      if(rows === 0) {
+      if (rows === 0) {
         reject();
       }
       else {
@@ -120,10 +129,9 @@ repo.authenticate = (credentials) => {
     let email = credentials.email;
     let password = credentials.password;
 
-    if(email && password) {
+    if (email && password) {
 
-      db.User.authenticate(credentials).then((authenticatedUser) =>
-      {
+      db.User.authenticate(credentials).then((authenticatedUser) => {
         // Create the access token
         let data = JSON.stringify({
           user_id: authenticatedUser.user_id,
@@ -132,7 +140,7 @@ repo.authenticate = (credentials) => {
 
         let accessToken = token.generateToken(data);
 
-        if(authenticatedUser && accessToken) {
+        if (authenticatedUser && accessToken) {
           resolve({
             user: authenticatedUser,
             accessToken: accessToken
@@ -141,8 +149,7 @@ repo.authenticate = (credentials) => {
         else {
           reject();
         }
-      }, () =>
-      {
+      }, () => {
         reject();
       });
     }

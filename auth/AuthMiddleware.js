@@ -1,10 +1,9 @@
 const isDevOrTest = require("../helpers").isDevOrTest;
 const token = require("./Jwt");
 const UserRepo = require("../repositories/UserRepository");
-const AuthenticationController = require("../controllers/AuthenticationController");
 const _ = require("lodash");
 
-module.exports = () => {
+module.exports = (db) => {
 
   /**
    * Returns am object from the requesting client's browser/cookie
@@ -19,7 +18,7 @@ module.exports = () => {
    * @param req
    */
   let tryGetJwtHeader = (req) => {
-    return req.get("Auth")
+    return req.get("Authorization");
   };
 
   /**
@@ -48,6 +47,7 @@ module.exports = () => {
   let authenticateUserWithJwt = (jwt, req, res, next) => {
 
     let tokenData = token.decodeJwtToken(jwt);
+
     UserRepo.getUserById(tokenData.user_id).then((user) =>
     {
       req.user = user;
@@ -61,28 +61,6 @@ module.exports = () => {
     });
   };
 
-  /**
-   * Method for authenticating user with local credentials.
-   * @param credentials
-   * @param req
-   * @param res
-   * @param next
-   */
-  let authenticateUserWithLocal = (credentials, req, res, next) => {
-
-    UserRepo.authenticate(credentials).then((authUser) =>
-    {
-      res.header("Auth", authUser.accessToken);
-      req.user = authUser.user;
-      next();
-    }, (e) => {
-
-      if(isDevOrTest()){
-        res.status(401).send(e);
-      }
-      res.status(401).send()
-    })
-  };
 
   return {
 
@@ -102,23 +80,26 @@ module.exports = () => {
       if (jwt) {
         authenticateUserWithJwt(jwt, req, res, next);
       }
-      else {
-        let credentials = _.pick(req.body, "email", "password");
-        authenticateUserWithLocal(credentials, req, res, next);
-      }
+      res.status(400).send();
     },
 
+    /**
+     * Middleware authentication function that checks for user auth with admin role
+     * @param req
+     * @param res
+     * @param next
+     */
     requireAdminAuthentication: (req, res, next) => {
-
-      // TODO: make mw func that verifies user is of the role admin.
-
-      if(isDevOrTest()) {
-        next();
-      }
-      else {
-        res.status(401).send();
-      }
-
+      
+      next();
+      // let jwt = tryGetJwt(req);
+      // if(jwt) {
+      //   authenticateUserWithJwt(jwt, req, res, next);
+      // }
+      // else {
+      //   let credentials = _.pick(req.body, "email", "password");
+      //   authenticateUserWithLocal(credentials, req, res, next);
+      // }
     }
   }
 };
