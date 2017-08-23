@@ -10,6 +10,15 @@ const cleanUserAttr = [
   "first_name",
   "last_name"
 ];
+const includeRoles  = {
+  model : db.Role,
+  attributes: {
+    exclude: ['created_at', 'role_description', 'updated_at']
+  },
+  through: {
+    attributes: []
+  }
+};
 
 /**
  *
@@ -33,9 +42,7 @@ repo.getUsersWithRoles = () => {
 
     db.User.findAll({
       attributes: cleanUserAttr,
-      include: [{
-        model: db.Role
-      }]
+      include: [includeRoles]
     }).then((users) => resolve(users), (e) => {
       reject(e);
     });
@@ -44,22 +51,15 @@ repo.getUsersWithRoles = () => {
 
 /**
  *
- * @param id
  * @returns {Promise.<Model>}
+ * @param user_id
  */
-repo.getUserById = (id) => {
+repo.getUserById = (user_id) => {
 
   return new Promise((resolve, reject) => {
     db.User.findOne({
-      include: [
-        {
-          model: db.Role,
-
-        }
-      ],
-      where: {
-        user_id: id
-      }
+      include: [includeRoles],
+      where: {user_id}
     }).then((user) => resolve(user.clean()), () => {
       reject();
     });
@@ -135,6 +135,7 @@ repo.authenticate = (credentials) => {
         // Create the access token
         let data = JSON.stringify({
           user_id: authenticatedUser.user_id,
+          roles: authenticatedUser.Roles,
           type: "authentication"
         });
 

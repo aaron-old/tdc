@@ -87,7 +87,9 @@ module.exports = (db, DataTypes) => {
 
       User.findOne({
         where: {email},
-
+        include: [{
+          all: true
+        }]
       }).then((user) =>
       {
         if (!user || !bcrypt.compareSync(body.password, user.get("password_hash"))) {

@@ -16,6 +16,4 @@ module.exports = {
     return process.env !== "production"
   },
 
-  getRole: () => {}
-
 };

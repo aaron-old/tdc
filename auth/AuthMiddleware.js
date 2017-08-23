@@ -80,7 +80,7 @@ module.exports = (db) => {
       if (jwt) {
         authenticateUserWithJwt(jwt, req, res, next);
       }
-      res.status(400).send();
+
     },
 
     /**
