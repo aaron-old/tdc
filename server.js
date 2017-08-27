@@ -61,7 +61,9 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
   })
 }
 else {
-  app.listen(app.get("port"));
+  app.listen(app.get("port"), () => {
+    console.log(`find the server at: http://localhost:${app.get("port")}/`);
+  });
   db.sequelize.sync();
 }
 
