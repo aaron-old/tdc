@@ -13,7 +13,7 @@ module.exports = {
   },
 
   isDevOrTest: () => {
-    return process.env !== "production"
+    return process.env.NODE_ENV !== "production"
   },
 
 };
