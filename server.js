@@ -47,10 +47,6 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
-});
-
 app.use("/api", routes);
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
