@@ -1,6 +1,7 @@
 'use strict';
 
 let db = require("../models");
+let _ = require('lodash');
 let token = require("../auth/Jwt");
 let repo = {};
 
@@ -132,10 +133,20 @@ repo.authenticate = (credentials) => {
     if (email && password) {
 
       db.User.authenticate(credentials).then((authenticatedUser) => {
+
+        // Clean up the user roles object.
+        let roles = [];
+        authenticatedUser.Roles.forEach((element) => {
+          roles.push({
+            roleId: element.role_id,
+            roleName: element.role_name
+          })
+        });
+
         // Create the access token
         let data = JSON.stringify({
           user_id: authenticatedUser.user_id,
-          roles: authenticatedUser.Roles,
+          roles: roles,
           type: "authentication"
         });
 

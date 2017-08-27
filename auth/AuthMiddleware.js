@@ -59,6 +59,7 @@ module.exports = (db) => {
       }
       res.status(401).send();
     });
+
   };
 
 

@@ -1,7 +1,10 @@
-require("dotenv").config();
+if(process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
@@ -49,6 +52,11 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 app.use("/api", routes);
 

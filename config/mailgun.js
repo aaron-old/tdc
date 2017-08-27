@@ -3,6 +3,11 @@ const mailgun = require('mailgun-js')({
   domain: process.env.MAILGUN_DOMAIN
 });
 
+/**
+ *
+ * @param recipient
+ * @param message
+ */
 exports.sendEmail = (recipient, message) => {
   const data = {
     from: `Tdoggs Corner - Boxing Blog`,
@@ -12,7 +17,6 @@ exports.sendEmail = (recipient, message) => {
   };
 
   mailgun.messages().send(data, (error, body) => {
-
     if (process.env !== "production") {
       console.error(error);
       console.error(body);
@@ -21,8 +25,12 @@ exports.sendEmail = (recipient, message) => {
 
 };
 
+/**
+ *
+ * @param sender
+ * @param message
+ */
 exports.contactForm = (sender, message) => {
-
   const data = {
     from: sender,
     to: "mustarddevelopment@gmail.com",
