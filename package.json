@@ -22,13 +22,14 @@
   },
   "homepage": "https://github.com/mustardmandevelopments/tdc#readme",
   "devDependencies": {
-    "concurrently": "^3.4.0",
+
     "jquery": "^3.2.1",
     "mailgun-js": "^0.12.1",
     "mocha": "^3.5.0",
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "concurrently": "^3.4.0",
     "auth0-js": "^8.8.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
