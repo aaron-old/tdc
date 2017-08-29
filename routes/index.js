@@ -6,6 +6,7 @@ let routes = require("express").Router();
 let PostController = require("../controllers/PostController");
 let UserController = require("../controllers/UserController");
 let AuthenticationController = require('../controllers/AuthenticationController');
+let RegistrationController = require("../controllers/RegistrationController");
 let RoleController = require('../controllers/RoleController');
 
 
@@ -20,7 +21,7 @@ routes.delete("/post/:id", authMiddleware.requireUserAuthentication, PostControl
 routes.get("/users", authMiddleware.requireAdminAuthentication, UserController.GetUsers);
 routes.get("/users/roles", authMiddleware.requireAdminAuthentication, UserController.GetUsersWithRoles);
 routes.get("/users/:id", authMiddleware.requireAdminAuthentication, UserController.GetUserById);
-routes.post("/users", authMiddleware.requireAdminAuthentication, UserController.CreateUser);
+routes.put("/users", authMiddleware.requireAdminAuthentication, UserController.CreateUser);
 routes.delete("/users/:id", authMiddleware.requireAdminAuthentication, UserController.DeleteUserById);
 
 // Role Routes
@@ -32,5 +33,10 @@ routes.put("/role",  authMiddleware.requireAdminAuthentication, RoleController.A
 routes.post("/auth/login", AuthenticationController.Login);
 routes.post("/auth/logout", AuthenticationController.Logout);
 
+
+// Registration Routes
+
+routes.put("/registration/author", authMiddleware.requireAdminAuthentication, RegistrationController.CreateAuthor);
+routes.put("/registration/subscriber", RegistrationController.CreateSubscriber);
 
 module.exports = routes;

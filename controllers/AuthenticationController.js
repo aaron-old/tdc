@@ -4,11 +4,6 @@ const _ = require('lodash');
 
 // TODO: Add mail-gun
 
-
-exports.RegisterUser = (req, res) => {
-
-};
-
 /**
  * Login controller method.
  * @param req
