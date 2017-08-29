@@ -19,7 +19,7 @@ const routes = require("./routes/index");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.use(compression());
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500)
         .json({
           status: "error",
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "production") {
 }
 else {
   app.use(logger("dev"));
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500)
         .json({
           status: "error",

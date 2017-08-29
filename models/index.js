@@ -6,11 +6,10 @@ let env = process.env.NODE_ENV || 'development';
 let db = {};
 let isDevOrTest = require("../helpers").isDevOrTest;
 
-
 let config;
 
 if(isDevOrTest()) {
-  config = require(__dirname + '/../config/config.json')[env]
+  config = require(__dirname + '/../config/config.js')[env]
 }
 else {
   config = {
@@ -21,7 +20,6 @@ else {
     dialect: process.env.DIALECT
   }
 }
-
 let sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: config.dialect,
   host: config.host,
