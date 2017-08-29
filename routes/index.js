@@ -2,12 +2,12 @@ let db = require("../models");
 let _ = require("lodash");
 let authMiddleware = require("../auth/AuthMiddleware")(db);
 let routes = require("express").Router();
-let passport = require('passport');
 
 let PostController = require("../controllers/PostController");
 let UserController = require("../controllers/UserController");
 let AuthenticationController = require('../controllers/AuthenticationController');
 let RoleController = require('../controllers/RoleController');
+
 
 // Post Routes
 routes.get('/post', PostController.GetAllPost);

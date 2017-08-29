@@ -10,7 +10,7 @@
     "dev-server": "nodemon server.js",
     "server": "babel-node server.js",
     "client": "babel-node start-client.js",
-    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "sequelize db:seed:all && cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "proxy": "http://localhost:3001/",
   "repository": {
@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/mustardmandevelopments/tdc#readme",
   "devDependencies": {
-
     "jquery": "^3.2.1",
     "mailgun-js": "^0.12.1",
     "mocha": "^3.5.0",

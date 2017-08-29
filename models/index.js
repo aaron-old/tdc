@@ -24,7 +24,12 @@ else {
 
 let sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: config.dialect,
-  host: config.host
+  host: config.host,
+  pool: {
+    max: 100,
+    min: 0,
+    idle: 10000
+  }
 });
 
 fs
