@@ -32,7 +32,7 @@ const Sidebar = (props) => {
                  [ sidebarStyles, toggleWidth.toggled ] :
                  [ sidebarStyles, toggleWidth.notToggled ]
              }>
-            <div className="row`">
+            <div className="row">
                 <AuthorPhotoRow/>
                 <AuthorSocialRow/>
                 <SidebarNavigation/>
