@@ -1,12 +1,17 @@
 const UserRepo = require("../repositories/UserRepository");
+const MailGun = require("../config/mailgun");
 const Author = {};
 
 
 Author.CreateNew = (author) => {
 
   return new Promise((resolve, reject) => {
+
     if(author) {
-      resolve({user_id: 1, firstName: "test"});
+
+      //MailGun.sendEmail(author.email, { text: "Test Author Registration"});
+
+      resolve({});
     }
     reject("No Author");
   });
@@ -22,6 +27,8 @@ Author.CreateNew = (author) => {
   // User is created as an author.
 
   // Email is sent to author
+
+  // Setup the template for html registration email.
 
 
 };

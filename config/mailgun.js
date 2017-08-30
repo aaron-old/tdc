@@ -10,7 +10,7 @@ const mailgun = require('mailgun-js')({
  */
 exports.sendEmail = (recipient, message) => {
   const data = {
-    from: `Tdoggs Corner - Boxing Blog`,
+    from: "Tdoggs Corner <mailgun@tdoggscorner.com>",
     to: recipient,
     subject: message.subject,
     text: message.text
@@ -18,7 +18,9 @@ exports.sendEmail = (recipient, message) => {
 
   mailgun.messages().send(data, (error, body) => {
     if (process.env !== "production") {
-      console.error(error);
+      if(error) {
+        console.error(error);
+      }
       console.error(body);
     }
   });

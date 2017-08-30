@@ -4,7 +4,6 @@ let bcrypt = require("bcrypt-nodejs");
 let crypto = require("crypto-js");
 let jwt = require("jsonwebtoken");
 let _ = require("lodash");
-const isDevOrTest = require('../helpers').isDevOrTest;
 
 let hooks = {
 
@@ -37,12 +36,9 @@ module.exports = (db, DataTypes) => {
             this.setDataValue("password_hash", hashedPw);
           }
         },
-        salt: {
-          type: DataTypes.STRING
-        },
-        password_hash: {
-          type: DataTypes.STRING
-        },
+        salt: DataTypes.STRING,
+        password_hash: DataTypes.STRING,
+        profile_id: DataTypes.INTEGER,
         google_id: {
           type: DataTypes.STRING,
           unique: true
@@ -62,9 +58,7 @@ module.exports = (db, DataTypes) => {
           unique: true,
           allowNull: false,
           isEmail: true
-        },
-        first_name: DataTypes.STRING,
-        last_name: DataTypes.STRING,
+        }
       },
       {
         hooks: {
@@ -135,7 +129,7 @@ module.exports = (db, DataTypes) => {
 
   User.prototype.clean = function () {
     let json = this.toJSON();
-    return _.pick(json, ["user_id", "email", "first_name", "last_name", "Roles"]);
+    return _.pick(json, ["user_id", "email", "Roles"]);
   };
 
   return User;

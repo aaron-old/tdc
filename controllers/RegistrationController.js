@@ -5,7 +5,7 @@ const registration = {};
 
 registration.CreateAuthor = (req, res) => {
 
-  AuthorDomain.CreateNew({}).then((author) => {
+  AuthorDomain.CreateNew({ email: "mustarddevelopment@gmail.com"}).then((author) => {
     res.status(201).json(author);
   }, (e) =>{
 
