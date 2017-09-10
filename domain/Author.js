@@ -1,36 +1,70 @@
 const UserRepo = require("../repositories/UserRepository");
+const db = require('../models/');
 const MailGun = require("../config/mailgun");
 const Author = {};
 
 
 Author.CreateNew = (author) => {
 
-  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-    if(author) {
+        // Generate a reset password token.
 
-      //MailGun.sendEmail(author.email, { text: "Test Author Registration"});
+        // Generate the expiration for the token
 
-      resolve({});
-    }
-    reject("No Author");
-  });
+        //MailGun.sendEmail(author.email, { text: "Test Author Registration"});
 
-  // Should return a promise to the controller once completed.
+        UserRepo.createUser({
+            email: author.email,
+            password: Math.random().toString(36).slice(-8),
+            Profile: [{
+                first_name: author.firstName,
+                last_name: author.lastName
+            }],
+        }).then((user) =>
+        {
+            Author.AddAuthorRole(user).then(() =>
+            {
+                // Send the email to the user
+                resolve(user);
+            }, (e) =>
+            {
+                reject(e);
+            });
 
-  // Receive the author request body { firstName, lastName, email }
+        }, (e) =>
+        {
+            reject(e);
+        });
+    });
+};
 
-  // Author object has the proper role set applied.
+Author.AddAuthorRole = (user) => {
 
-  // Author object has generated temporary password applied.
+    return new Promise((resolve, reject) => {
 
-  // User is created as an author.
+        db.Role.findOne({
+            where: {
+                role_name: "AUTHOR"
+            }
+        }).then((role) =>
+        {
+            db.User_Role.create({
+                user_id: user.user_id,
+                role_id: role.role_id
+            }).then(() =>
+            {
+                resolve();
+            }, (e) =>
+            {
+                reject(e);
+            });
 
-  // Email is sent to author
-
-  // Setup the template for html registration email.
-
-
+        }, (e) =>
+        {
+            reject(e);
+        });
+    });
 };
 
 module.exports = Author;

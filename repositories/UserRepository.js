@@ -29,6 +29,7 @@ repo.getUsers = () => {
     db.User.findAll({attributes: cleanUserAttr}).then((users) => resolve(users), (e) => {
       reject(e);
     });
+
   });
 };
 
@@ -45,6 +46,7 @@ repo.getUsersWithRoles = () => {
     }).then((users) => resolve(users), (e) => {
       reject(e);
     });
+
   });
 };
 
@@ -85,14 +87,25 @@ repo.getUserByEmail = (email) => {
 /**
  *
  * @param user
+ * @param roles
  * @returns {*|Promise}
  */
 repo.createUser = (user) => {
 
   return new Promise((resolve, reject) => {
-    db.User.create(user).then((user) => resolve(user.clean()), () => {
+
+    db.User.create(user, {
+      include: [{
+        model: db.Profile
+      }]
+    }).then((user) =>
+    {
+      resolve(user.clean());
+    }, () =>
+    {
       reject();
     });
+
   });
 };
 

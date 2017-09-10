@@ -14,9 +14,5 @@ module.exports = (db, DataTypes) => {
     tableName: "profile",
     underscored: true
   });
-
-  Profile.associate = function (models) {
-    Profile.hasOne(models.User, {foreignKey: "profile_id"});
-  };
   return Profile;
 };

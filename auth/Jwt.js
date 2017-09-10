@@ -7,7 +7,7 @@ const isDevOrTest = require('../helpers').isDevOrTest;
  * @param unencryptedData
  */
 let encryptData = (unencryptedData) => {
-  return crypto.AES.encrypt(unencryptedData, process.env.SECRET_KEY).toString();
+    return crypto.AES.encrypt(unencryptedData, process.env.SECRET_KEY).toString();
 };
 
 /**
@@ -15,48 +15,59 @@ let encryptData = (unencryptedData) => {
  * @param encryptedData
  */
 let decryptData = (encryptedData) => {
-  return crypto.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(crypto.enc.Utf8);
+    return crypto.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(crypto.enc.Utf8);
 };
 
 module.exports = {
 
-  /**
-   * Generates a jwt token for a request.
-   * @param data
-   * @returns {*}
-   */
-  generateToken: (data) => {
+    /**
+     * Generates a jwt token for a request.
+     * @param data
+     * @returns {*}
+     */
+    generateToken: (data) => {
 
-    try {
-      return jwt.sign({
-        data: data
-      }, process.env.JWT_SECRET);
+        try {
+            return jwt.sign({
+                data: data
+            }, process.env.JWT_SECRET);
+        }
+        catch (e) {
+
+            if (isDevOrTest()) {
+                console.error(e);
+            }
+        }
+    },
+
+    generateDayToken: (data) => {
+
+        try {
+            return jwt.sign({
+                data: data,
+                exp: 86400
+            }, process.env.JWT_SECRET)
+        }
+    },
+
+    /**
+     * Decodes an incoming jwt token.
+     * @param token
+     */
+    decodeJwtToken: function (token) {
+
+        try {
+            let verifiedJwt = jwt.verify(token, process.env.JWT_SECRET);
+            return JSON.parse(verifiedJwt.data);
+        }
+        catch (e) {
+
+            if (isDevOrTest()) {
+                console.error(e);
+            }
+        }
+    },
+
+    getStoredJwt: function () {
     }
-    catch (e) {
-
-      if (isDevOrTest()) {
-        console.error(e);
-      }
-    }
-  },
-
-  /**
-   * Decodes an incoming jwt token.
-   * @param token
-   */
-  decodeJwtToken: function (token) {
-
-    try {
-      let verifiedJwt = jwt.verify(token, process.env.JWT_SECRET);
-      return JSON.parse(verifiedJwt.data);
-    }
-    catch (e) {
-
-      if(isDevOrTest()) {
-        console.error(e);
-      }
-    }
-  },
-
-  getStoredJwt: function () {}
 };

@@ -47,12 +47,21 @@ app.use(methodOverride());
 app.use("/api", routes);
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
-  if(process.env.FORCE_SYNC) {
-    db.sequelize.sync({force: true}).then(() => {
-      app.listen(app.get("port"), () => {
-        console.log(`find the server at: http://localhost:${app.get("port")}/`);
+
+
+  if(process.env.FORCE_SYNC === "true") {
+
+    db.sequelize.drop().then(() => {
+
+      db.sequelize.sync().then(() => {
+        app.listen(app.get("port"), () => {
+          console.log(`find the server at: http://localhost:${app.get("port")}/`);
+        })
       })
-    })
+
+    });
+
+    return;
   }
   db.sequelize.sync().then(() => {
     app.listen(app.get("port"), () => {
