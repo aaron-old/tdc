@@ -1,7 +1,8 @@
 const UserRepo = require("../repositories/UserRepository");
-const db = require("../models/");
+const Role = require("./Role");
 
 const Administrator = {};
+const ADMINISTRATOR_ROLE_NAME = "ADMIN"; // TODO: Change this to a configuration setting.
 
 Administrator.CreateNew = (admin = null) => {
 
@@ -22,7 +23,7 @@ Administrator.CreateNew = (admin = null) => {
             }
         }).then((user) =>
         {
-            Administrator.AddAdminRole(user).then(() =>
+            Role.AddRole(ADMINISTRATOR_ROLE_NAME, user.user_id).then(() =>
             {
                 resolve(user)
             }, (e) =>
@@ -36,9 +37,4 @@ Administrator.CreateNew = (admin = null) => {
     });
 };
 
-Administrator.AddAdminRole = () => {
-
-    return new Promise((resolve, reject) => {
-       resolve();
-    });
-};
+module.exports = Administrator;

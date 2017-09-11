@@ -40,16 +40,6 @@ module.exports = {
         }
     },
 
-    generateDayToken: (data) => {
-
-        try {
-            return jwt.sign({
-                data: data,
-                exp: 86400
-            }, process.env.JWT_SECRET)
-        }
-    },
-
     /**
      * Decodes an incoming jwt token.
      * @param token

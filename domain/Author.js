@@ -1,7 +1,9 @@
 const UserRepo = require("../repositories/UserRepository");
-const db = require('../models/');
+const Role = require("./Role");
 const MailGun = require("../config/mailgun");
 const Author = {};
+
+const AUTHOR_ROLE_NAME = "AUTHOR"; // TODO: Change this to a configuration setting.
 
 
 Author.CreateNew = (author) => {
@@ -23,7 +25,7 @@ Author.CreateNew = (author) => {
             }],
         }).then((user) =>
         {
-            Author.AddAuthorRole(user).then(() =>
+            Role.AddRole(AUTHOR_ROLE_NAME, user.user_id).then(() =>
             {
                 // Send the email to the user
                 resolve(user);
@@ -39,32 +41,5 @@ Author.CreateNew = (author) => {
     });
 };
 
-Author.AddAuthorRole = (user) => {
-
-    return new Promise((resolve, reject) => {
-
-        db.Role.findOne({
-            where: {
-                role_name: "AUTHOR"
-            }
-        }).then((role) =>
-        {
-            db.User_Role.create({
-                user_id: user.user_id,
-                role_id: role.role_id
-            }).then(() =>
-            {
-                resolve();
-            }, (e) =>
-            {
-                reject(e);
-            });
-
-        }, (e) =>
-        {
-            reject(e);
-        });
-    });
-};
 
 module.exports = Author;

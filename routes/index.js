@@ -36,6 +36,7 @@ routes.post("/auth/logout", AuthenticationController.Logout);
 
 // Registration Routes
 
+routes.put("/registration/admin", authMiddleware.requireAdminAuthentication, RegistrationController.CreateAdmin);
 routes.put("/registration/author", authMiddleware.requireAdminAuthentication, RegistrationController.CreateAuthor);
 routes.put("/registration/subscriber", RegistrationController.CreateSubscriber);
 
