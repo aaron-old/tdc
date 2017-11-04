@@ -87,7 +87,6 @@ repo.getUserByEmail = (email) => {
 /**
  *
  * @param user
- * @param roles
  * @returns {*|Promise}
  */
 repo.createUser = (user) => {

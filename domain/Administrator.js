@@ -7,6 +7,7 @@ const ADMINISTRATOR_ROLE_NAME = "ADMIN"; // TODO: Change this to a configuration
 Administrator.CreateNew = (admin = null) => {
 
     if(admin === null) {
+        admin = {};
         admin.email     = process.env.ADMINISTRATOR_EMAIL || "mustarddevelopment@gmail.com";
         admin.password  = process.env.ADMINISTRATOR_PASSWORD || "123";
         admin.firstName = process.env.ADMINISTRATOR_FIRST_NAME || "Test";

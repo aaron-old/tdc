@@ -1,20 +1,17 @@
 const UserRepo = require("../repositories/UserRepository");
 const Role = require("./Role");
-const MailGun = require("../config/mailgun");
+const Token = require("./Token");
+const Email = require("./Email");
+
 const Author = {};
-
 const AUTHOR_ROLE_NAME = "AUTHOR"; // TODO: Change this to a configuration setting.
-
 
 Author.CreateNew = (author) => {
 
     return new Promise((resolve, reject) => {
 
-        // Generate a reset password token.
-
-        // Generate the expiration for the token
-
-        //MailGun.sendEmail(author.email, { text: "Test Author Registration"});
+        // TODO: Generate a reset password token.
+        // TODO: Generate the expiration for the token
 
         UserRepo.createUser({
             email: author.email,
@@ -27,8 +24,14 @@ Author.CreateNew = (author) => {
         {
             Role.AddRole(AUTHOR_ROLE_NAME, user.user_id).then(() =>
             {
-                // Send the email to the user
-                resolve(user);
+                Token.CreateOneTimeToken({data: user}).then((token) =>
+                {
+                    Email.SendVerifyRegistration(token, user.email);
+                    resolve(user);
+                }, () =>
+                {
+                    reject();
+                });
             }, (e) =>
             {
                 reject(e);
@@ -40,6 +43,9 @@ Author.CreateNew = (author) => {
         });
     });
 };
+
+
+
 
 
 module.exports = Author;
