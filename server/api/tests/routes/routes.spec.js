@@ -9,7 +9,7 @@ describe("routes functioning correctly", function () {
   describe("no endpoint given", function () {
     let request, route;
     beforeEach(function () {
-      route = proxyRequire("./routes", {'': sinon.stub});
+      route = proxyRequire("../../routes/routes", {'': sinon.stub});
       route(app);
       request = supertest(app);
     });
@@ -21,7 +21,4 @@ describe("routes functioning correctly", function () {
           .end(done);
     });
   });
-
-
-
 });

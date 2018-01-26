@@ -11,6 +11,8 @@
       <w>polyfill</w>
       <w>resave</w>
       <w>signup</w>
+      <w>sinon</w>
+      <w>supertest</w>
     </words>
   </dictionary>
 </component>

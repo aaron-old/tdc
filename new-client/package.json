@@ -5,7 +5,7 @@
   "engines": {
     "node": "<=6.11.1"
   },
-  "description": "A boxing a gaming blog.",
+  "description": "A boxing and gaming blog.",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

@@ -1,0 +1,10 @@
+module.exports = {
+
+  GetAllPosts: () => {
+
+  },
+
+  GetAllActivePosts: () => {
+
+  }
+};

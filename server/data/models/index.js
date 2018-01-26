@@ -4,12 +4,16 @@ let Sequelize = require('sequelize');
 let basename = path.basename(module.filename);
 let env = process.env.NODE_ENV || 'development';
 let db = {};
-let isDevOrTest = require("../helpers").isDevOrTest;
-
 let config;
 
-if(isDevOrTest()) {
-  config = require(__dirname + '/../config/config.js')[env]
+if (env === 'test' || env === 'development') {
+  config = {
+    username: process.env.MYSQL_USER || 'tdc_application',
+    password: process.env.MYSQL_PASSWORD || '123',
+    database: process.env.MYSQL_DB || 'tdc_dev',
+    host: process.env.MYSQL_HOST || 'localhost',
+    dialect: process.env.DIALECT || 'mysql',
+  }
 }
 else {
   config = {
@@ -17,7 +21,7 @@ else {
     username: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     host: process.env.MYSQL_HOST,
-    dialect: process.env.DIALECT
+    dialect: process.env.DIALECT,
   }
 }
 let sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -26,8 +30,8 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
   pool: {
     max: 100,
     min: 0,
-    idle: 10000
-  }
+    idle: 10000,
+  },
 });
 
 fs
@@ -50,3 +54,4 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
