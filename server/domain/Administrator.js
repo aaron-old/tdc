@@ -14,7 +14,6 @@ Administrator.CreateNew = (admin = null) => {
         admin.lastName  = process.env.ADMINISTRATOR_LAST_NAME || "Admin"
     }
     return new Promise((resolve, reject) => {
-
         UserRepo.createUser({
             email: admin.email,
             password: admin.password,

@@ -10,8 +10,8 @@ Author.CreateNew = (author) => {
 
     return new Promise((resolve, reject) => {
 
-        // TODO: Generate a reset password token.
-        // TODO: Generate the expiration for the token
+        // TODO Generate a reset password token.
+        // TODO Generate the expiration for the token
 
         UserRepo.createUser({
             email: author.email,
